@@ -11,7 +11,7 @@ func BFS(root *TreeNode) []int {
 		return []int(nil)
 	}
 
-	result := []int{}
+	var result []int
 
 	queue := []*TreeNode{root}
 
