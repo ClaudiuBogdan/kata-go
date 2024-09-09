@@ -58,3 +58,11 @@ practice/
 - The script prevents overwriting existing katas in a practice day to avoid accidental data loss.
 
 By using this script, you can easily set up daily practice sessions, allowing you to implement the same algorithm multiple times to improve your skills and track your progress over time.
+
+## Test
+
+Run tests for all katas:
+
+```bash
+go test ./practice/...
+```
