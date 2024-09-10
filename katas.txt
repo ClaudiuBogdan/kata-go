@@ -1,5 +1,6 @@
 practice_kata copy-kata templates/binary_tree/avl_tree
 practice_kata copy-kata templates/binary_tree/binary_tree_bfs
+practice_kata copy-kata templates/binary_tree/binary_tree_compare
 practice_kata copy-kata templates/binary_tree/binary_tree_dfs
 practice_kata copy-kata templates/binary_tree/binary_tree_invert
 practice_kata copy-kata templates/binary_tree/binary_tree_lca
