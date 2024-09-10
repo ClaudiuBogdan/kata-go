@@ -1,5 +1,13 @@
 # Go Algorithm katas
 
+## Install kata script
+
+Runt the following command to install the kata script:
+
+```bash
+go install ./scripts/practice/practice_kata.go 
+```
+
 ## Daily Kata Practice
 
 To facilitate daily algorithm practice, we've created a script called `practice_kata.sh`. This script allows you to generate new practice days and copy specific katas to practice.
@@ -9,7 +17,7 @@ To facilitate daily algorithm practice, we've created a script called `practice_
 1. Generate a new practice day:
 
 ```bash
-./practice_kata.sh new-day
+practice_kata new-day
 ```
 
 This creates a new directory in the `practice` folder with the name `day_X`, where X is the next available number.
@@ -17,7 +25,7 @@ This creates a new directory in the `practice` folder with the name `day_X`, whe
 2. Copy a kata to the latest practice day:
 
 ```bash
-./practice_kata.sh copy-kata binary_tree/avl_tree
+practice_kata copy-kata templates/binary_tree/avl_tree
 ```
 
 This copies the AVL tree kata template to the latest practice day.
@@ -25,7 +33,7 @@ This copies the AVL tree kata template to the latest practice day.
 3. Copy a kata to a specific practice day:
 
 ```bash
-./practice_kata.sh copy-kata graph/dijkstra day_3
+./practice_kata.sh copy-kata templates/graph/dijkstra day_3
 ```
 
 This copies the Dijkstra's algorithm kata template to the `day_3` directory.
@@ -66,3 +74,11 @@ Run tests for all katas:
 ```bash
 go test ./practice/...
 ```
+
+## Generate comands
+
+```bash
+go run ./scripts/generate/generate_commands.go
+```
+
+This will generate the katas.txt where you can copy the commands to generate the katas.
