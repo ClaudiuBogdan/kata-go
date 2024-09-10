@@ -9,47 +9,47 @@ import (
 )
 
 const (
-	practiceDir = "practice"
+	practiceDir  = "practice"
 	templatesDir = "templates"
 )
 
 func main() {
-    if len(os.Args) < 2 {
-        fmt.Println("Usage: kata-manager {new-day|copy-kata <template_path> [target_day]|last-day}")
-        os.Exit(1)
-    }
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: kata-manager {new-day|copy-kata <template_path> [target_day]|last-day}")
+		os.Exit(1)
+	}
 
-    switch os.Args[1] {
-    case "new-day":
-        if err := generateNewDay(); err != nil {
-            fmt.Println("Error:", err)
-            os.Exit(1)
-        }
-    case "copy-kata":
-        if len(os.Args) < 3 {
-            fmt.Println("Usage: kata-manager copy-kata <template_path> [target_day]")
-            os.Exit(1)
-        }
-        templatePath := os.Args[2]
-        targetDay := ""
-        if len(os.Args) > 3 {
-            targetDay = os.Args[3]
-        }
-        if err := copyKata(templatePath, targetDay); err != nil {
-            fmt.Println("Error:", err)
-            os.Exit(1)
-        }
-    case "last-day":
-        lastDay, err := findLastDay()
-        if err != nil {
-            fmt.Println("Error:", err)
-            os.Exit(1)
-        }
-        fmt.Println(lastDay)
-    default:
-        fmt.Println("Unknown command. Use 'new-day', 'copy-kata', or 'last-day'.")
-        os.Exit(1)
-    }
+	switch os.Args[1] {
+	case "new-day":
+		if err := generateNewDay(); err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+	case "copy-kata":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: kata-manager copy-kata <template_path> [target_day]")
+			os.Exit(1)
+		}
+		templatePath := os.Args[2]
+		targetDay := ""
+		if len(os.Args) > 3 {
+			targetDay = os.Args[3]
+		}
+		if err := copyKata(templatePath, targetDay); err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+	case "last-day":
+		lastDay, err := findLastDay()
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+		fmt.Println(lastDay)
+	default:
+		fmt.Println("Unknown command. Use 'new-day', 'copy-kata', or 'last-day'.")
+		os.Exit(1)
+	}
 }
 
 func generateNewDay() error {
@@ -136,8 +136,9 @@ func copyDir(src, dst string) error {
 			return err
 		}
 
-		// Skip files starting with underscore
-		if filepath.Base(path)[0] == '_' {
+		// Skip files starting with underscore or README.md files
+		baseName := filepath.Base(path)
+		if baseName[0] == '_' || baseName == "README.md" {
 			if info.IsDir() {
 				return filepath.SkipDir
 			}
@@ -179,27 +180,27 @@ func copyFile(src, dst string) error {
 }
 
 func findLastDay() (string, error) {
-    entries, err := os.ReadDir(practiceDir)
-    if err != nil {
-        return "", fmt.Errorf("failed to read practice directory: %w", err)
-    }
+	entries, err := os.ReadDir(practiceDir)
+	if err != nil {
+		return "", fmt.Errorf("failed to read practice directory: %w", err)
+	}
 
-    var lastDay string
-    var lastNum int
-    for _, entry := range entries {
-        if entry.IsDir() && len(entry.Name()) > 4 && entry.Name()[:4] == "day_" {
-            if num, err := strconv.Atoi(entry.Name()[4:]); err == nil {
-                if num > lastNum {
-                    lastNum = num
-                    lastDay = entry.Name()
-                }
-            }
-        }
-    }
+	var lastDay string
+	var lastNum int
+	for _, entry := range entries {
+		if entry.IsDir() && len(entry.Name()) > 4 && entry.Name()[:4] == "day_" {
+			if num, err := strconv.Atoi(entry.Name()[4:]); err == nil {
+				if num > lastNum {
+					lastNum = num
+					lastDay = entry.Name()
+				}
+			}
+		}
+	}
 
-    if lastDay == "" {
-        return "", fmt.Errorf("no practice days found")
-    }
+	if lastDay == "" {
+		return "", fmt.Errorf("no practice days found")
+	}
 
-    return filepath.Join(practiceDir, lastDay), nil
+	return filepath.Join(practiceDir, lastDay), nil
 }
