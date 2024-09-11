@@ -1,74 +1,92 @@
 package maxheap
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestMaxHeap(t *testing.T) {
-    t.Run("Insert and Extract", func(t *testing.T) {
-        heap := NewMaxHeap()
-        values := []int{4, 10, 3, 5, 1}
-        expected := []int{10, 5, 4, 3, 1}
+	t.Run("NewMaxHeap", func(t *testing.T) {
+		heap := NewMaxHeap[int]()
+		if !heap.IsEmpty() {
+			t.Errorf("New heap should be empty")
+		}
+		if heap.Size() != 0 {
+			t.Errorf("New heap should have size 0, got %d", heap.Size())
+		}
+	})
 
-        for _, val := range values {
-            heap.Insert(val)
-        }
+	t.Run("Insert and Peek", func(t *testing.T) {
+		heap := NewMaxHeap[int]()
+		heap.Insert(5)
+		heap.Insert(3)
+		heap.Insert(7)
 
-        for _, exp := range expected {
-            val, ok := heap.Extract()
-            if !ok {
-                t.Errorf("Expected to extract a value, but got false")
-            }
-            if val != exp {
-                t.Errorf("Expected %d, but got %d", exp, val)
-            }
-        }
+		max, err := heap.Peek()
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		if max != 7 {
+			t.Errorf("Expected max to be 7, got %d", max)
+		}
+		if heap.Size() != 3 {
+			t.Errorf("Expected size to be 3, got %d", heap.Size())
+		}
+	})
 
-        _, ok := heap.Extract()
-        if ok {
-            t.Errorf("Expected false when extracting from empty heap")
-        }
-    })
+	t.Run("Extract", func(t *testing.T) {
+		heap := NewMaxHeap[int]()
+		heap.Insert(5)
+		heap.Insert(3)
+		heap.Insert(7)
+		heap.Insert(1)
 
-    t.Run("Peek", func(t *testing.T) {
-        heap := NewMaxHeap()
-        heap.Insert(5)
-        heap.Insert(10)
-        heap.Insert(3)
+		max, err := heap.Extract()
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		if max != 7 {
+			t.Errorf("Expected max to be 7, got %d", max)
+		}
+		if heap.Size() != 3 {
+			t.Errorf("Expected size to be 3, got %d", heap.Size())
+		}
 
-        val, ok := heap.Peek()
-        if !ok {
-            t.Errorf("Expected to peek a value, but got false")
-        }
-        if val != 10 {
-            t.Errorf("Expected peek to return 10, but got %d", val)
-        }
+		max, err = heap.Peek()
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		if max != 5 {
+			t.Errorf("Expected new max to be 5, got %d", max)
+		}
+	})
 
-        heap.Extract()
-        val, ok = heap.Peek()
-        if !ok {
-            t.Errorf("Expected to peek a value, but got false")
-        }
-        if val != 5 {
-            t.Errorf("Expected peek to return 5, but got %d", val)
-        }
-    })
+	t.Run("EmptyHeapOperations", func(t *testing.T) {
+		heap := NewMaxHeap[int]()
 
-    t.Run("Size", func(t *testing.T) {
-        heap := NewMaxHeap()
-        if heap.Size() != 0 {
-            t.Errorf("Expected empty heap to have size 0, but got %d", heap.Size())
-        }
+		_, err := heap.Peek()
+		if err == nil {
+			t.Errorf("Expected error on Peek() for empty heap")
+		}
 
-        heap.Insert(5)
-        heap.Insert(10)
-        if heap.Size() != 2 {
-            t.Errorf("Expected heap to have size 2, but got %d", heap.Size())
-        }
+		_, err = heap.Extract()
+		if err == nil {
+			t.Errorf("Expected error on Extract() for empty heap")
+		}
+	})
 
-        heap.Extract()
-        if heap.Size() != 1 {
-            t.Errorf("Expected heap to have size 1, but got %d", heap.Size())
-        }
-    })
+	t.Run("LargeNumberOfInserts", func(t *testing.T) {
+		heap := NewMaxHeap[int]()
+		for i := 0; i < 1000; i++ {
+			heap.Insert(i)
+		}
+
+		if heap.Size() != 1000 {
+			t.Errorf("Expected size to be 1000, got %d", heap.Size())
+		}
+
+		max, _ := heap.Peek()
+		if max != 999 {
+			t.Errorf("Expected max to be 999, got %d", max)
+		}
+	})
 }
