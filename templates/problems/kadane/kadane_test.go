@@ -1,7 +1,8 @@
 package kadane
 
 import (
-    "testing"
+	"math"
+	"testing"
 )
 
 func TestMaxSubarraySum(t *testing.T) {
