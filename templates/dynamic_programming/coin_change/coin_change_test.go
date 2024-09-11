@@ -32,8 +32,8 @@ func TestCoinChange(t *testing.T) {
 		{
 			name:     "Large amount",
 			coins:    []int{1, 2, 5, 10, 20, 50, 100},
-			amount:   1234,
-			expected: 13,
+			amount:   9876,
+			expected: 102,
 		},
 		{
 			name:     "No solution",

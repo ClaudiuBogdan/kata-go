@@ -1,28 +1,38 @@
-# Coin Change Problem (Dynamic Programming Solution)
+# Coin Change (Dynamic Programming)
 
 ## Problem Description
 
-Given an array of coin denominations and a target amount, find the minimum number of coins needed to make up that amount. If the amount cannot be made up by any combination of the coins, return -1.
+Given an amount of money and an array of coin denominations, find the minimum number of coins needed to make up that amount. If it's not possible to make the amount using the given coin denominations, return -1.
 
-## Approach
+## Approach: Dynamic Programming
 
-This solution uses dynamic programming to solve the coin change problem efficiently. The algorithm builds a table (dp array) where each entry dp[i] represents the minimum number of coins needed to make up the amount i.
+Dynamic Programming is an algorithmic paradigm that solves a given complex problem by breaking it into subproblems and stores the results of subproblems to avoid computing the same results again. For the coin change problem:
 
-### Algorithm Steps:
-
-1. Initialize a dp array of size `amount + 1` with a value greater than the maximum possible number of coins (amount + 1).
-2. Set dp[0] = 0 as the base case (0 coins needed to make up amount 0).
-3. Iterate through amounts from 1 to the target amount:
-   - For each coin denomination:
-     - If the coin value is less than or equal to the current amount:
-       - Update dp[i] with the minimum of its current value and dp[i - coin] + 1.
-4. If dp[amount] is still greater than amount, return -1 (no solution).
-5. Otherwise, return dp[amount] as the minimum number of coins needed.
+1. Create a DP table `dp` of size `amount + 1` to store the minimum number of coins needed for each amount from 0 to the target amount.
+2. Initialize `dp[0] = 0` (it takes 0 coins to make an amount of 0) and all other values to `amount + 1` (a value larger than any possible solution).
+3. For each coin denomination:
+   - For each amount from the coin value to the target amount:
+     - Update `dp[amount]` to be the minimum of its current value and `1 + dp[amount - coin]`.
+4. If `dp[amount]` is still `amount + 1`, return -1 (impossible to make the amount).
+5. Otherwise, return `dp[amount]`.
 
 ## Complexity Analysis
 
-- Time Complexity: O(amount * len(coins)), where amount is the target amount and len(coins) is the number of coin denominations.
-- Space Complexity: O(amount) for the dp array.
+- Time Complexity: O(amount * n), where n is the number of coin denominations. We have two nested loops: one over all amounts up to the target amount, and for each amount, we consider all coin denominations.
+- Space Complexity: O(amount) to store the DP table.
+
+## Implementation Details
+
+The package provides the main function:
+
+`CoinChange(coins []int, amount int) int`: Finds the minimum number of coins needed to make up the given amount.
+
+The function takes two parameters:
+
+- `coins`: A slice of integers representing the available coin denominations.
+- `amount`: An integer representing the target amount.
+
+It returns an integer representing the minimum number of coins needed, or -1 if it's impossible.
 
 ## Usage
 
@@ -33,20 +43,14 @@ result := CoinChange(coins, amount)
 fmt.Println(result) // Output: 3 (11 = 5 + 5 + 1)
 ```
 
-## Implementation Details
-
-The package provides one main function:
-
-`CoinChange(coins []int, amount int) int`: Solves the coin change problem and returns the minimum number of coins needed or -1 if no solution exists.
-
 ## Testing
 
-The implementation includes a test suite that covers various scenarios:
+The implementation should include a comprehensive test suite covering various scenarios:
 
-1. Basic examples
-2. Large amounts
-3. Cases with no solution
-4. Edge cases (e.g., amount = 0)
+1. Standard case with a solution
+2. Case where it's impossible to make the amount
+3. Case with a large amount and many coin denominations
+4. Edge cases (amount = 0, single coin denomination, etc.)
 
 To run the tests, use the following command:
 
@@ -54,15 +58,56 @@ To run the tests, use the following command:
 go test
 ```
 
-## Advantages of Dynamic Programming
+The test file should use Go's built-in testing package and include multiple test cases to ensure the correctness of the `CoinChange` function under different scenarios.
 
-- Optimal substructure: The solution to the problem can be constructed from optimal solutions of its subproblems.
-- Overlapping subproblems: The algorithm solves each subproblem only once and stores the results for future use, avoiding redundant computations.
+## Advantages of Dynamic Programming for Coin Change
+
+1. Optimal solution: Guarantees the minimum number of coins
+2. Efficiency: Solves the problem in polynomial time
+3. Versatility: Can handle any set of coin denominations
+4. Reusability: Subproblem solutions are stored and reused
 
 ## Applications
 
 - Currency exchange systems
-- Vending machine coin dispensers
-- Financial planning and budgeting tools
+- Vending machine software
+- Cashier systems in retail
+- Financial software for cash management
 
-This dynamic programming solution to the coin change problem provides an efficient way to calculate the minimum number of coins needed for any given amount, making it useful in various financial and computational applications.
+## Visual Representation
+
+Here's a visual representation of the DP table for coins [1, 2, 5] and amount 11:
+
+```
+Amount:   0  1  2  3  4  5  6  7  8  9 10 11
+DP value: 0  1  1  2  2  1  2  2  3  3  2  3
+```
+
+## Variations and Extensions
+
+1. Coin Change 2: Count the number of ways to make the amount
+2. Minimum number of coins with limited supply of each denomination
+3. Maximum number of coins (greedy approach with largest denominations first)
+4. Coin change with additional constraints (e.g., must use at least one of each coin)
+
+## Implementation Notes
+
+- The implementation assumes that the input is valid (non-negative amount, positive coin denominations).
+- This solution provides the minimum number of coins. It can be extended to also return the actual coins used.
+- For very large amounts or many coin denominations, consider using big integer arithmetic to prevent overflow.
+
+## Limitations
+
+- May be slow for very large amounts or many coin denominations due to O(amount * n) time complexity
+- Does not handle negative or floating-point amounts
+- Assumes an infinite supply of each coin denomination
+
+## Related Problems
+
+- Knapsack Problem
+- Minimum Cost Path
+- Rod Cutting
+- Subset Sum Problem
+- Partition Equal Subset Sum
+
+Remember that while dynamic programming is very efficient for this problem, it's important to understand the problem constraints and requirements. In some variations of this problem or in different contexts, other techniques like greedy algorithms or backtracking might be more appropriate.
