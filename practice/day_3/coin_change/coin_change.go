@@ -12,7 +12,7 @@ func CoinChange(coins []int, amount int) int {
 
 	// Fil the dp table
 	for _, coin := range coins{
-		for i := coin; i <= amount; i++{
+		for i := coin; i <= amount; i++{k
 			dp[i] = min(dp[i], dp[i - coin] + 1)
 		}
 	}
