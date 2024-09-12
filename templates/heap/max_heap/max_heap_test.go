@@ -6,7 +6,7 @@ import (
 
 func TestMaxHeap(t *testing.T) {
 	t.Run("NewMaxHeap", func(t *testing.T) {
-		heap := NewMaxHeap[int]()
+		heap := New[int]()
 		if !heap.IsEmpty() {
 			t.Errorf("New heap should be empty")
 		}
@@ -16,7 +16,7 @@ func TestMaxHeap(t *testing.T) {
 	})
 
 	t.Run("Insert and Peek", func(t *testing.T) {
-		heap := NewMaxHeap[int]()
+		heap := New[int]()
 		heap.Insert(5)
 		heap.Insert(3)
 		heap.Insert(7)
@@ -34,7 +34,7 @@ func TestMaxHeap(t *testing.T) {
 	})
 
 	t.Run("Extract", func(t *testing.T) {
-		heap := NewMaxHeap[int]()
+		heap := New[int]()
 		heap.Insert(5)
 		heap.Insert(3)
 		heap.Insert(7)
@@ -61,7 +61,7 @@ func TestMaxHeap(t *testing.T) {
 	})
 
 	t.Run("EmptyHeapOperations", func(t *testing.T) {
-		heap := NewMaxHeap[int]()
+		heap := New[int]()
 
 		_, err := heap.Peek()
 		if err == nil {
@@ -75,7 +75,7 @@ func TestMaxHeap(t *testing.T) {
 	})
 
 	t.Run("LargeNumberOfInserts", func(t *testing.T) {
-		heap := NewMaxHeap[int]()
+		heap := New[int]()
 		for i := 0; i < 1000; i++ {
 			heap.Insert(i)
 		}
