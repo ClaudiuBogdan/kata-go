@@ -45,7 +45,7 @@ func TestDFS(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g := NewGraph(tt.vertices)
+			g := New(tt.vertices)
 			for _, edge := range tt.edges {
 				g.AddEdge(edge[0], edge[1])
 			}
@@ -96,7 +96,7 @@ func TestHasPath(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g := NewGraph(tt.vertices)
+			g := New(tt.vertices)
 			for _, edge := range tt.edges {
 				g.AddEdge(edge[0], edge[1])
 			}
@@ -147,7 +147,7 @@ func TestFindAllPaths(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g := NewGraph(tt.vertices)
+			g := New(tt.vertices)
 			for _, edge := range tt.edges {
 				g.AddEdge(edge[0], edge[1])
 			}
