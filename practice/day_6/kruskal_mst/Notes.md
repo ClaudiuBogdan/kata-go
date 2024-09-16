@@ -405,3 +405,58 @@ Certainly! There are several important points to understand about Kruskal's algo
 
 12. Parallelization:
     - While this implementation is sequential, there are parallel versions of Kruskal's algorithm for very large graphs.
+
+## How does the rank work?
+
+The rank in a Union-Find data structure is a key optimization technique called "union by rank." Let's dive into how it works and why it's important.
+
+1. Purpose of Rank:
+   The rank is used to keep the tree balanced, which helps maintain the efficiency of the Find operation.
+
+2. Definition of Rank:
+   - The rank of a node is an upper bound on the height of the node's subtree.
+   - Initially, every node has a rank of 0.
+
+3. How Rank is Used:
+
+   Let's look at the Union operation again:
+
+   ```go
+   func (uf *UnionFind) Union(x, y int) {
+       xroot := uf.Find(x)
+       yroot := uf.Find(y)
+
+       if uf.rank[xroot] < uf.rank[yroot] {
+           uf.parent[xroot] = yroot
+       } else if uf.rank[xroot] > uf.rank[yroot] {
+           uf.parent[yroot] = xroot
+       } else {
+           uf.parent[yroot] = xroot
+           uf.rank[xroot]++
+       }
+   }
+   ```
+
+   Here's how the rank is used:
+
+   a. If the ranks are different:
+      - We attach the root with the lower rank to the root with the higher rank.
+      - This ensures that the depth of the resulting tree doesn't increase.
+
+   b. If the ranks are the same:
+      - We arbitrarily choose one root to be the parent of the other.
+      - We increase the rank of the new parent by 1.
+      - This is because the height of its tree has potentially increased by 1.
+
+4. Why Rank Works:
+   - By always attaching the "shallower" tree to the "deeper" tree, we prevent the creation of long chains.
+   - This keeps the trees relatively balanced, which improves the efficiency of future Find operations.
+
+5. Rank vs. Height:
+   - Rank is not always equal to the actual height of the tree.
+   - It's an upper bound on the height.
+   - After path compression (in Find operations), the actual height might be less than the rank.
+
+6. Efficiency Gain:
+   - Without union by rank, the worst-case time complexity for a sequence of m operations could be O(m log n).
+   - With union by rank (and path compression in Find), the amortized time complexity becomes nearly constant - O(α(n)), where α is the inverse Ackermann function.

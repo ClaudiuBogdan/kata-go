@@ -4,6 +4,10 @@
 
 Implement Kruskal's algorithm to find the Minimum Spanning Tree (MST) of a weighted undirected graph. A minimum spanning tree is a subset of the edges that connects all vertices with the minimum total edge weight, without creating any cycles.
 
+## Videos
+
+[Union Find Data Structure](https://www.youtube.com/watch?v=ayW5B2W9hfo)
+
 ## Approach
 
 Kruskal's algorithm follows a greedy approach to find the MST:
