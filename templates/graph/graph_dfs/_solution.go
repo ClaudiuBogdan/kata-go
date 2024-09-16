@@ -22,78 +22,81 @@ func (g *Graph) AddEdge(v, w int) {
 
 // DFS performs a depth-first search starting from the given source vertex
 func (g *Graph) DFS(source int) []int {
-	visited := make([]bool, g.Vertices)
-	result := []int{}
+	visited := make(map[int]bool)
+	var result []int
+	stack := []int{source}
 
-	var dfsUtil func(v int)
-	dfsUtil = func(v int) {
-		visited[v] = true
-		result = append(result, v)
+	for len(stack) > 0 {
+		v := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
 
-		for _, neighbor := range g.AdjList[v] {
-			if !visited[neighbor] {
-				dfsUtil(neighbor)
+		if !visited[v] {
+			visited[v] = true
+			result = append(result, v)
+
+			for i := len(g.AdjList[v]) - 1; i >= 0; i-- {
+				if !visited[g.AdjList[v][i]] {
+					stack = append(stack, g.AdjList[v][i])
+				}
 			}
 		}
 	}
 
-	dfsUtil(source)
 	return result
 }
 
 // HasPath checks if there's a path between source and destination using DFS
 func (g *Graph) HasPath(source, destination int) bool {
-	visited := make([]bool, g.Vertices)
+	visited := make(map[int]bool)
+	stack := []int{source}
 
-	var dfsUtil func(v int) bool
-	dfsUtil = func(v int) bool {
+	for len(stack) > 0 {
+		v := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+
 		if v == destination {
 			return true
 		}
 
-		visited[v] = true
-
-		for _, neighbor := range g.AdjList[v] {
-			if !visited[neighbor] {
-				if dfsUtil(neighbor) {
-					return true
+		if !visited[v] {
+			visited[v] = true
+			for _, neighbor := range g.AdjList[v] {
+				if !visited[neighbor] {
+					stack = append(stack, neighbor)
 				}
 			}
 		}
-
-		return false
 	}
 
-	return dfsUtil(source)
+	return false
 }
 
 // FindAllPaths finds all paths between source and destination using DFS
 func (g *Graph) FindAllPaths(source, destination int) [][]int {
-	visited := make([]bool, g.Vertices)
-	currentPath := []int{}
-	allPaths := [][]int{}
+	var allPaths [][]int
+	visited := make(map[int]bool)
+	path := []int{source}
 
-	var dfsUtil func(v int)
-	dfsUtil = func(v int) {
-		visited[v] = true
-		currentPath = append(currentPath, v)
-
+	var dfs func(v int)
+	dfs = func(v int) {
 		if v == destination {
-			pathCopy := make([]int, len(currentPath))
-			copy(pathCopy, currentPath)
+			pathCopy := make([]int, len(path))
+			copy(pathCopy, path)
 			allPaths = append(allPaths, pathCopy)
-		} else {
-			for _, neighbor := range g.AdjList[v] {
-				if !visited[neighbor] {
-					dfsUtil(neighbor)
-				}
-			}
+			return
 		}
 
+		visited[v] = true
+		for _, neighbor := range g.AdjList[v] {
+			if !visited[neighbor] {
+				path = append(path, neighbor)
+				dfs(neighbor)
+				path = path[:len(path)-1]
+			}
+		}
 		visited[v] = false
-		currentPath = currentPath[:len(currentPath)-1]
 	}
 
-	dfsUtil(source)
+	dfs(source)
 	return allPaths
 }
