@@ -69,11 +69,13 @@ The test file uses Go's built-in testing package and includes multiple test case
 ## Advantages and Limitations
 
 Advantages:
+
 - Guarantees the minimum spanning tree for a connected, undirected graph
 - Works well for sparse graphs
 - Easy to implement and understand
 
 Limitations:
+
 - May not be the most efficient for dense graphs (Prim's algorithm might be better in such cases)
 - Requires sorting all edges, which can be memory-intensive for very large graphs
 
@@ -86,3 +88,6 @@ Limitations:
 
 Remember that Kruskal's algorithm is just one way to find a minimum spanning tree. For dense graphs or when starting from a specific vertex is preferred, Prim's algorithm might be a better choice.
 
+##
+
+[MST Explanation](https://www.youtube.com/watch?v=71UQH7Pr9kU)
