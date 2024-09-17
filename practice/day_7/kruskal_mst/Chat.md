@@ -1,5 +1,7 @@
 # Answer
 
+## Answer v1
+
 **1. Code Analysis:**
 
 Strengths:
@@ -33,3 +35,30 @@ The Union-Find data structure is like a family tree. Each person starts as their
 1. When implementing algorithms like Kruskal's MST, it's helpful to add comments explaining the purpose of each step. This not only helps others understand your code but also helps you catch logical errors.
 
 2. Always test your code with various input sizes and edge cases. For a graph algorithm, try testing with disconnected graphs, graphs with cycles, and graphs where all edge weights are the same.
+
+## Answer v2
+
+**1. Code Analysis:**
+
+The student's code is well-structured and follows good practices. The use of a disjoint set data structure (UnionFind) is effective in implementing Kruskal's algorithm. However, there are a few areas for improvement:
+
+- In the `Union` function, there is a typo in the line `yroot := uf.Find(x)`. It should be `yroot := uf.Find(y)`.
+- The code does not handle the case where the input graph is not connected. In such cases, the Minimum Spanning Tree (MST) is not defined.
+- The code does not validate if the input graph contains self-loops or parallel edges.
+
+**2. Concept Explanation:**
+
+Kruskal's algorithm is a greedy algorithm used to find the Minimum Spanning Tree (MST) of a connected, undirected, and weighted graph. The algorithm works by sorting all the edges in non-decreasing order of their weights and then selecting the smallest edge that does not form a cycle.
+
+Think of it like building a network of roads between cities. You want to connect all the cities with the minimum total length of roads. You start by building the shortest road that connects two cities, then the next shortest road that connects another city, and so on. However, you need to make sure that you don't build a road that forms a loop, as that would be unnecessary.
+
+**3. Hints & Questions:**
+
+1. What would happen if the input graph contains self-loops or parallel edges? How would you modify the code to handle such cases?
+2. How would you optimize the code to handle very large input graphs? Can you think of a way to reduce the time complexity of the algorithm?
+3. What would you do if the input graph is not connected? How would you modify the code to handle such cases?
+
+**4. Helpful Tips:**
+
+1. Always test your code with edge cases, like an empty graph or a graph with a single vertex.
+2. Use a debugger or print statements to visualize the execution of your code and understand how it works. This can help you identify bugs and optimize your code.
