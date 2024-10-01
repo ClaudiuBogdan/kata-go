@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -52,8 +53,22 @@ func main() {
 	}
 }
 
+func getLatestDay(entries []fs.DirEntry) int {
+
+	latestDay := 0
+	for _, entry := range entries {
+		if entry.IsDir() && len(entry.Name()) > 4 && entry.Name()[:4] == "day_" {
+			if dayNum, err := strconv.Atoi(entry.Name()[4:]); err == nil && dayNum > latestDay {
+				latestDay = dayNum
+			}
+		}
+	}
+	return latestDay
+}
+
 func generateNewDay() error {
 	entries, err := os.ReadDir(practiceDir)
+
 	if err != nil {
 		if os.IsNotExist(err) {
 			if err := os.Mkdir(practiceDir, 0755); err != nil {
@@ -64,14 +79,7 @@ func generateNewDay() error {
 		}
 	}
 
-	latestDay := 0
-	for _, entry := range entries {
-		if entry.IsDir() && len(entry.Name()) > 4 && entry.Name()[:4] == "day_" {
-			if dayNum, err := strconv.Atoi(entry.Name()[4:]); err == nil && dayNum > latestDay {
-				latestDay = dayNum
-			}
-		}
-	}
+	latestDay := getLatestDay(entries)
 
 	newDay := fmt.Sprintf("day_%d", latestDay+1)
 	newDayPath := filepath.Join(practiceDir, newDay)
@@ -99,15 +107,13 @@ func copyKata(templatePath, targetDay string) error {
 		if err != nil {
 			return fmt.Errorf("failed to read practice directory: %w", err)
 		}
-		for i := len(entries) - 1; i >= 0; i-- {
-			if entries[i].IsDir() && len(entries[i].Name()) > 4 && entries[i].Name()[:4] == "day_" {
-				targetDay = entries[i].Name()
-				break
-			}
-		}
-		if targetDay == "" {
+
+		latestDay := getLatestDay(entries)
+
+		if latestDay == 0 {
 			return fmt.Errorf("no practice days found, please generate a new day first")
 		}
+		targetDay = fmt.Sprintf("day_%d", latestDay)
 	}
 
 	targetDayPath := filepath.Join(practiceDir, targetDay)
