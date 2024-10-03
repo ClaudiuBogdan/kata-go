@@ -87,3 +87,9 @@ Limitations:
 
 Remember that while this implementation uses DFS, there are other approaches to topological sorting, such as Kahn's algorithm, which uses a queue-based approach. The choice of algorithm may depend on specific requirements or constraints of your application.
 
+## Video
+
+- [Topological Sort Algorithm | Graph Theory](https://www.youtube.com/watch?v=eL-KzMXSXXI&t=18s)
+
+- [Topological Sort Visualized and Explained](https://www.youtube.com/watch?v=7J3GadLzydI)
+
