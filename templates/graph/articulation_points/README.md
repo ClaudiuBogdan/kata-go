@@ -1,5 +1,7 @@
 # Finding Articulation Points in a Graph
 
+![articultation points](./_image.png)
+
 ## Problem Description
 
 Implement an algorithm to find all articulation points in an undirected graph. An articulation point (or cut vertex) is a vertex whose removal increases the number of connected components in the graph.
