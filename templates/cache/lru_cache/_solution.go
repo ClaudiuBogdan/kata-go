@@ -1,8 +1,8 @@
 package lrucache
 
 import (
-    "errors"
-    "fmt"
+	"errors"
+	"fmt"
 )
 
 // Node represents a node in the doubly linked list
@@ -42,6 +42,10 @@ func (lru *LRUCache) Get(key int) (int, error) {
 
 // Put adds a key-value pair to the cache
 func (lru *LRUCache) Put(key, value int) {
+    if lru.capacity <= 0 {
+        return // Do nothing if capacity is 0 or negative
+    }
+    
     if node, exists := lru.cache[key]; exists {
         node.value = value
         lru.moveToFront(node)
