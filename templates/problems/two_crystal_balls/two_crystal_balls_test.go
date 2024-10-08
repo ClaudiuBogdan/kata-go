@@ -33,6 +33,26 @@ func TestTwoCrystalBalls(t *testing.T) {
 			breaks:   append(make([]bool, 999), true),
 			expected: 999,
 		},
+		{
+			name:     "Empty input",
+			breaks:   []bool{},
+			expected: -1,
+		},
+		{
+			name:     "Single element (true)",
+			breaks:   []bool{true},
+			expected: 0,
+		},
+		{
+			name:     "Single element (false)",
+			breaks:   []bool{false},
+			expected: -1,
+		},
+		{
+			name:     "Two elements (break at second)",
+			breaks:   []bool{false, true},
+			expected: 1,
+		},
 	}
 
 	for _, tt := range tests {
