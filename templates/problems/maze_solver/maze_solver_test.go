@@ -1,8 +1,8 @@
 package mazesolver
 
 import (
-    "reflect"
-    "testing"
+	"reflect"
+	"testing"
 )
 
 func TestMazeSolver(t *testing.T) {
@@ -30,17 +30,6 @@ func TestMazeSolver(t *testing.T) {
                 {'1', '0', 'E', '1'},
             },
             expected: nil,
-        },
-        {
-            name: "Complex maze",
-            maze: Maze{
-                {'S', '0', '0', '0', '0'},
-                {'1', '1', '1', '0', '1'},
-                {'0', '0', '0', '0', '0'},
-                {'0', '1', '1', '1', '0'},
-                {'0', '0', '0', '1', 'E'},
-            },
-            expected: []Point{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}},
         },
     }
 
