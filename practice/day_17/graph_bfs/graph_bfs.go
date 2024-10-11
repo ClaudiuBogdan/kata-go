@@ -35,6 +35,7 @@ func (g *Graph) BFS(source int) []int {
 
 		for _, neighbor := range g.AdjList[current] {
 			if !visited[neighbor] {
+				// TODO: mark here visited to avoid visiting neighbor multiple times
 				visited[neighbor] = true
 				queue = append(queue, neighbor)
 			}
@@ -63,6 +64,7 @@ func (g *Graph) ShortestPath(source, destination int) []int {
 			if !visited[neighbor] {
 				queue = append(queue, neighbor)
 				parent[neighbor] = current
+				// TODO: mark here visited to avoid visiting the neighbor multiple times
 				visited[neighbor] = true
 			}
 		}
