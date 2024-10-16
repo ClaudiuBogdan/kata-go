@@ -1,5 +1,7 @@
 # 0/1 Knapsack Problem (Dynamic Programming Solution)
 
+![Dynamic Programming Table](./_table.png)
+
 ## Problem Description
 
 The 0/1 Knapsack problem is a classic optimization problem. Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.
@@ -90,3 +92,7 @@ go test
 - Cutting stock problems in manufacturing
 
 This dynamic programming solution to the 0/1 Knapsack problem provides an efficient and optimal approach to a classic combinatorial optimization problem, with applications in various fields including finance, logistics, and resource management.
+
+## Video Explanation
+
+[0/1 Knapsack problem | Dynamic Programming](https://www.youtube.com/watch?v=cJ21moQpofY)
