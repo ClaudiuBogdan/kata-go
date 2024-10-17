@@ -11,7 +11,7 @@ type MaxHeap[T cmp.Ordered] struct {
 
 // New creates and returns a new empty MaxHeap.
 func New[T cmp.Ordered]() *MaxHeap[T] {
-	return &MaxHeap[T]{elements: make([]T, 0)}
+
 }
 
 // Insert adds a new element to the heap.
