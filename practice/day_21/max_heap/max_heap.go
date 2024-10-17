@@ -83,6 +83,7 @@ func (h *MaxHeap[T]) bubbleDown(index int) {
 
 		maxIndex := index
 
+		// TODO: make sure you compare h.elements[left] > h.elements[maxIndex] 
 		if left < h.Size() && h.elements[left] > h.elements[maxIndex] {
 			maxIndex = left
 		}
