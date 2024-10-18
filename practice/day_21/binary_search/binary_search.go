@@ -15,7 +15,7 @@ func binarySearchAux(arrPointer *[]int, low, high, target int) int {
 
 	if arr[middle] == target {
 		return middle
-	// TODO: if target is lower that middle value
+		// TODO: if target is lower that middle value
 	} else if target < arr[middle] {
 		return binarySearchAux(arrPointer, low, middle-1, target)
 	} else {
