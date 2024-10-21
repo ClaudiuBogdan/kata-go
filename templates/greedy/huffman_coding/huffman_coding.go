@@ -1,12 +1,9 @@
 package huffmancoding
 
 import (
-	"container/heap"
-	"fmt"
-	"strings"
+	"sort"
 )
 
-// Node represents a node in the Huffman tree
 type Node struct {
 	Char  rune
 	Freq  int
@@ -14,112 +11,40 @@ type Node struct {
 	Right *Node
 }
 
-// PriorityQueue implements heap.Interface and holds Nodes
-type PriorityQueue []*Node
+func buildFrequencyMap(text string) map[rune]int {
 
-func (pq PriorityQueue) Len() int           { return len(pq) }
-func (pq PriorityQueue) Less(i, j int) bool { return pq[i].Freq < pq[j].Freq }
-func (pq PriorityQueue) Swap(i, j int)      { pq[i], pq[j] = pq[j], pq[i] }
-
-func (pq *PriorityQueue) Push(x interface{}) {
-	*pq = append(*pq, x.(*Node))
 }
 
-func (pq *PriorityQueue) Pop() interface{} {
-	old := *pq
-	n := len(old)
-	item := old[n-1]
-	*pq = old[0 : n-1]
-	return item
+func buildHuffmanTree(freqMap map[rune]int) *Node {
+
 }
 
-// BuildHuffmanTree builds the Huffman tree from the given frequency map
-func BuildHuffmanTree(freqMap map[rune]int) *Node {
-	pq := make(PriorityQueue, 0)
-	heap.Init(&pq)
+func generateCodes(root *Node) map[rune]string {
 
-	for char, freq := range freqMap {
-		heap.Push(&pq, &Node{Char: char, Freq: freq})
-	}
-
-	for pq.Len() > 1 {
-		left := heap.Pop(&pq).(*Node)
-		right := heap.Pop(&pq).(*Node)
-		parent := &Node{
-			Freq:  left.Freq + right.Freq,
-			Left:  left,
-			Right: right,
-		}
-		heap.Push(&pq, parent)
-	}
-
-	return heap.Pop(&pq).(*Node)
 }
 
-// GenerateHuffmanCodes generates Huffman codes for each character
-func GenerateHuffmanCodes(root *Node) map[rune]string {
-	codes := make(map[rune]string)
-	generateCodesRecursive(root, "", codes)
-	return codes
+func encode(text string, codes map[rune]string) string {
+
 }
 
-func generateCodesRecursive(node *Node, code string, codes map[rune]string) {
-	if node == nil {
-		return
-	}
-	if node.Char != 0 {
-		codes[node.Char] = code
-	}
-	generateCodesRecursive(node.Left, code+"0", codes)
-	generateCodesRecursive(node.Right, code+"1", codes)
+func decode(encoded string, root *Node) string {
+
 }
 
-// Compress compresses the input string using Huffman coding
-func Compress(input string) (string, map[rune]string) {
-	if len(input) == 0 {
-		return "", nil
-	}
+func HuffmanCoding(text string) (string, string, map[rune]string) {
 
-	freqMap := make(map[rune]int)
-	for _, char := range input {
-		freqMap[char]++
-	}
-
-	root := BuildHuffmanTree(freqMap)
-	codes := GenerateHuffmanCodes(root)
-
-	var compressed strings.Builder
-	for _, char := range input {
-		compressed.WriteString(codes[char])
-	}
-
-	return compressed.String(), codes
 }
 
-// Decompress decompresses the input string using the Huffman codes
-func Decompress(compressed string, codes map[rune]string) (string, error) {
-	if len(compressed) == 0 {
-		return "", nil
+func PrintHuffmanCodes(codes map[rune]string) []string {
+	chars := make([]rune, 0, len(codes))
+	for char := range codes {
+		chars = append(chars, char)
 	}
+	sort.Slice(chars, func(i, j int) bool { return chars[i] < chars[j] })
 
-	reverseMap := make(map[string]rune)
-	for char, code := range codes {
-		reverseMap[code] = char
+	result := make([]string, len(chars))
+	for i, char := range chars {
+		result[i] = string(char) + ": " + codes[char]
 	}
-
-	var decompressed strings.Builder
-	currentCode := ""
-	for _, bit := range compressed {
-		currentCode += string(bit)
-		if char, found := reverseMap[currentCode]; found {
-			decompressed.WriteRune(char)
-			currentCode = ""
-		}
-	}
-
-	if currentCode != "" {
-		return "", fmt.Errorf("invalid compressed data")
-	}
-
-	return decompressed.String(), nil
+	return result
 }

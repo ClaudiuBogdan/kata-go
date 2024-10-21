@@ -1,69 +1,57 @@
-# Huffman Coding for Data Compression
+# Huffman Coding
 
 ## Problem Description
 
-Implement Huffman coding, a data compression algorithm that assigns variable-length codes to characters based on their frequency of occurrence. More frequent characters are assigned shorter codes, resulting in overall compression of the data.
+Huffman coding is a data compression technique that assigns variable-length codes to characters based on their frequency of occurrence. The goal is to use shorter codes for more frequent characters and longer codes for less frequent ones, resulting in overall data compression.
 
-## Approach
+## Approach: Greedy Algorithm and Priority Queue
 
-The implementation follows these steps:
+Huffman coding uses a greedy algorithm approach combined with a priority queue:
 
-1. Count the frequency of each character in the input string.
-2. Build a Huffman tree using a priority queue (min-heap):
-   - Create a leaf node for each character and add it to the priority queue.
-   - Repeatedly extract two nodes with the lowest frequency, create a new internal node with these two as children, and add it back to the queue.
-   - Continue until only one node remains (the root of the Huffman tree).
-3. Generate Huffman codes by traversing the tree:
-   - Assign '0' for left branches and '1' for right branches.
-   - The code for each character is the path from the root to the leaf node.
-4. Compress the input string by replacing each character with its Huffman code.
-5. For decompression, use the Huffman codes to reconstruct the original string.
+1. Calculate the frequency of each character in the input data.
+2. Create a leaf node for each character and add it to a priority queue.
+3. While there is more than one node in the queue:
+   - Remove the two nodes with the lowest frequency.
+   - Create a new internal node with these two nodes as children.
+   - Add the new node to the queue.
+4. The remaining node is the root of the Huffman tree.
+5. Traverse the tree to assign codes (0 for left, 1 for right) to each character.
 
 ## Complexity Analysis
 
-- Time Complexity: 
-  - Building the frequency map: O(n)
-  - Building the Huffman tree: O(k log k), where k is the number of unique characters
-  - Generating codes: O(k)
-  - Compression and decompression: O(n)
-  Overall: O(n + k log k), where n is the length of the input string
-- Space Complexity: O(k) for the Huffman tree and codes, where k is the number of unique characters
+- Time Complexity: O(n log n), where n is the number of unique characters. Building the priority queue takes O(n), and we perform n-1 extract-min operations, each taking O(log n).
+- Space Complexity: O(n) for storing the Huffman tree and the character frequency map.
+
+## Implementation Details
+
+The package provides the following main functions:
+
+`BuildHuffmanTree(text string) *Node`: Builds a Huffman tree from the input text.
+`GenerateHuffmanCodes(root *Node) map[rune]string`: Generates Huffman codes for each character.
+`Encode(text string, codes map[rune]string) string`: Encodes the input text using Huffman codes.
+`Decode(encoded string, root *Node) string`: Decodes the Huffman-encoded text.
 
 ## Usage
 
 ```go
-input := "hello world"
-compressed, codes := Compress(input)
-fmt.Printf("Compressed: %s\n", compressed)
-
-decompressed, err := Decompress(compressed, codes)
-if err != nil {
-    fmt.Printf("Decompression error: %v\n", err)
-} else {
-    fmt.Printf("Decompressed: %s\n", decompressed)
-}
+text := "hello world"
+root := BuildHuffmanTree(text)
+codes := GenerateHuffmanCodes(root)
+encoded := Encode(text, codes)
+decoded := Decode(encoded, root)
+fmt.Println(encoded)
+fmt.Println(decoded)
 ```
-
-## Implementation Details
-
-The package provides the following main components:
-
-1. `Node` struct: Represents a node in the Huffman tree.
-2. `PriorityQueue` type: A min-heap implementation for building the Huffman tree.
-3. `BuildHuffmanTree(freqMap map[rune]int) *Node`: Builds the Huffman tree from a frequency map.
-4. `GenerateHuffmanCodes(root *Node) map[rune]string`: Generates Huffman codes from the tree.
-5. `Compress(input string) (string, map[rune]string)`: Compresses the input string and returns the compressed string and Huffman codes.
-6. `Decompress(compressed string, codes map[rune]string) (string, error)`: Decompresses the input string using the provided Huffman codes.
 
 ## Testing
 
-The implementation includes a test suite that covers various scenarios:
+The implementation should include a comprehensive test suite covering various scenarios:
 
-1. Compressing and decompressing simple strings
-2. Handling repeated characters
-3. Edge cases like single-character strings and empty strings
-4. Long strings with varied character frequencies
-5. Invalid compressed data
+1. Encoding and decoding simple strings
+2. Handling empty strings
+3. Texts with varying character frequencies
+4. Large inputs
+5. Special characters and Unicode
 
 To run the tests, use the following command:
 
@@ -71,25 +59,63 @@ To run the tests, use the following command:
 go test
 ```
 
-## Advantages and Limitations
+## Advantages of Huffman Coding
 
-Advantages:
-- Provides efficient compression for data with varying character frequencies
-- Lossless compression (original data can be fully recovered)
-- Can be adapted for different types of data (not just text)
-
-Limitations:
-- Requires the Huffman tree or codes to be transmitted along with the compressed data
-- May not be efficient for small amounts of data or data with uniform character frequencies
-- Not suitable for real-time compression of streaming data (entire input needed to build the tree)
+1. Optimal prefix-free encoding
+2. Lossless compression
+3. Adaptive to input data characteristics
+4. Relatively simple implementation
 
 ## Applications
 
 - Text compression
-- Image and video compression (as part of more complex algorithms)
-- Data transmission in networks
-- Archiving and file compression
-- Cryptography (though not for security, but as part of larger cryptographic systems)
+- Image and video compression (as part of larger algorithms)
+- Data transmission in communication systems
+- File compression utilities
 
-Remember that while Huffman coding is a fundamental compression technique, modern compression algorithms often use more advanced methods or combinations of techniques for better performance in specific scenarios.
+## Visual Representation
 
+Here's a visual representation of a Huffman tree for the string "hello world":
+
+```
+        *
+      /   \
+     *     o
+   /   \
+  *     l
+ / \
+h   *
+   / \
+  e   *
+     / \
+    w   r
+        |
+        d
+```
+
+## Variations and Extensions
+
+1. Adaptive Huffman coding
+2. Canonical Huffman coding
+3. Huffman coding with limited code length
+4. Huffman coding for streams of data
+
+## Implementation Notes
+
+- The implementation assumes that the input is valid (non-empty string).
+- This solution provides both encoding and decoding functionality.
+- For very large inputs, consider implementing a streaming version of the algorithm.
+
+## Limitations
+
+- Not efficient for small amounts of data
+- Requires knowledge of character frequencies in advance
+- Overhead of storing the Huffman tree or codes
+
+## Related Problems
+
+- Run-Length Encoding
+- Arithmetic Coding
+- LZW Compression
+- Burrows-Wheeler Transform
+- Shannon-Fano Coding
